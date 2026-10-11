@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<StackPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.medchain.ui.controllers.LoginController"
+    styleClass="login-root"
+    prefWidth="900" prefHeight="600">
+
+    <VBox alignment="CENTER" prefWidth="900" prefHeight="600">
+
+        <!-- Login Card -->
+        <VBox
+            styleClass="login-card"
+            alignment="CENTER"
+            spacing="16"
+            maxWidth="420"
+            minWidth="380">
+
+            <padding>
+                <Insets top="48" right="48" bottom="40" left="48"/>
+            </padding>
+
+            <!-- Logo -->
+            <VBox alignment="CENTER" spacing="4">
+                <Label text="🏥 MedChain"
+                       styleClass="login-logo-text"/>
+                <Label text="Blockchain Medical Record System"
+                       styleClass="login-subtitle"/>
+            </VBox>
+
+            <Separator styleClass="login-divider"/>
+
+            <!-- Email Field -->
+            <VBox spacing="6">
+                <Label text="EMAIL ADDRESS"
+                       styleClass="login-field-label"/>
+                <TextField
+                    fx:id="emailField"
+                    promptText="your@hospital.com"
+                    styleClass="login-field"
+                    prefHeight="42"/>
+            </VBox>
+
+            <!-- Password Field -->
+            <VBox spacing="6">
+                <Label text="PASSWORD"
+                       styleClass="login-field-label"/>
+                <PasswordField
+                    fx:id="passwordField"
+                    promptText="••••••••"
+                    styleClass="login-field"
+                    prefHeight="42"/>
+            </VBox>
+
+            <!-- Error Label -->
+            <Label
+                fx:id="errorLabel"
+                text=""
+                styleClass="login-error"
+                wrapText="true"
+                maxWidth="320"
+                alignment="CENTER"/>
+
+            <!-- Loading Label -->
+            <Label
+                fx:id="loadingLabel"
+                text="Signing in..."
+                styleClass="login-loading"
+                visible="false"/>
+
+            <!-- Login Button -->
+            <Button
+                fx:id="loginButton"
+                text="Sign In"
+                styleClass="login-btn"
+                onAction="#handleLogin"
+                maxWidth="Infinity"
+                prefHeight="44"/>
+
+            <!-- Register Link -->
+            <HBox alignment="CENTER" spacing="6">
+                <Label text="Don't have an account?"
+                       styleClass="login-footer"/>
+                <Hyperlink
+                    text="Create Account"
+                    styleClass="login-loading"
+                    onAction="#handleGoToRegister"/>
+            </HBox>
+
+            <!-- Footer -->
+            <Label
+                text="Powered by Ethereum Blockchain · SHA-256 Secured"
+                styleClass="login-footer"
+                alignment="CENTER"/>
+
+        </VBox>
+    </VBox>
+</StackPane>

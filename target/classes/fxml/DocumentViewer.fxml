@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.medchain.ui.controllers.DocumentController"
+    prefWidth="1100" prefHeight="720">
+
+    <!-- ══════════ SIDEBAR ══════════ -->
+    <left>
+        <VBox styleClass="sidebar" spacing="0" prefWidth="220">
+
+            <VBox spacing="2" style="-fx-padding: 24 20 20 20;">
+                <Label text="🏥 MedChain"
+                       styleClass="sidebar-logo"/>
+                <Label text="Medical Records"
+                       styleClass="sidebar-logo-sub"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <VBox spacing="2"
+                  style="-fx-padding: 0 20 16 20;">
+                <Label fx:id="welcomeLabel"
+                       text="Documents"
+                       styleClass="sidebar-welcome"
+                       wrapText="true"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <!-- Status -->
+            <VBox style="-fx-padding: 16 20 0 20;">
+                <Label fx:id="statusLabel"
+                       text=""
+                       styleClass="status-success"
+                       wrapText="true"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- ← Back Button -->
+            <VBox style="-fx-padding: 16 16 24 16;" spacing="8">
+                <Button text="← Back to Dashboard"
+                        styleClass="btn-secondary"
+                        onAction="#handleBack"
+                        maxWidth="Infinity"
+                        prefHeight="36"/>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ══════════ MAIN CONTENT ══════════ -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    styleClass="scroll-pane">
+            <VBox styleClass="content-area" spacing="20">
+
+                <!-- Header -->
+                <VBox spacing="4">
+                    <Label text="Medical Documents"
+                           styleClass="page-title"/>
+                    <Label text="Upload and view medical documents — PDF, JPG, PNG supported"
+                           styleClass="page-subtitle"/>
+                </VBox>
+
+                <!-- Upload Section -->
+                <VBox styleClass="section-card" spacing="14">
+                    <Label text="Upload New Document"
+                           styleClass="section-title"/>
+
+                    <HBox spacing="16" alignment="TOP_LEFT">
+
+                        <!-- Left — Form -->
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+
+                            <!-- File Selection -->
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <Button text="📁 Select File"
+                                        styleClass="btn-secondary"
+                                        onAction="#handleSelectFile"
+                                        prefHeight="36"/>
+                                <Label fx:id="selectedFileLabel"
+                                       text="No file selected"
+                                       styleClass="section-subtitle"/>
+                            </HBox>
+
+                            <!-- Document Type + Patient (doctor only) -->
+                            <HBox spacing="12">
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="DOCUMENT TYPE"
+                                           styleClass="field-label"/>
+                                    <ComboBox fx:id="documentTypeCombo"
+                                              promptText="Select type..."
+                                              styleClass="combo-field"
+                                              maxWidth="Infinity"
+                                              prefHeight="36"/>
+                                </VBox>
+
+                                <!-- Patient selector — Doctor only -->
+                                <VBox fx:id="patientSelectBox"
+                                      spacing="4"
+                                      HBox.hgrow="ALWAYS"
+                                      visible="false"
+                                      managed="false">
+                                    <Label text="PATIENT"
+                                           styleClass="field-label"/>
+                                    <ComboBox fx:id="patientComboBox"
+                                              promptText="Select patient..."
+                                              styleClass="combo-field"
+                                              maxWidth="Infinity"
+                                              prefHeight="36"/>
+                                </VBox>
+                            </HBox>
+
+                            <!-- Description -->
+                            <VBox spacing="4">
+                                <Label text="DESCRIPTION (Optional)"
+                                       styleClass="field-label"/>
+                                <TextField fx:id="descriptionField"
+                                           promptText="Brief description..."
+                                           styleClass="input-field"
+                                           prefHeight="36"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Right — Upload Button -->
+                        <VBox alignment="BOTTOM_CENTER"
+                              spacing="8" prefWidth="200">
+                            <Label text="Supported: PDF, JPG, PNG"
+                                   styleClass="section-subtitle"
+                                   alignment="CENTER"/>
+                            <Label text="Max size: 10 MB"
+                                   styleClass="section-subtitle"
+                                   alignment="CENTER"/>
+                            <Button fx:id="uploadButton"
+                                    text="⬆ Upload Document"
+                                    styleClass="btn-primary"
+                                    onAction="#handleUpload"
+                                    maxWidth="Infinity"
+                                    prefHeight="40"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Documents Table -->
+                <VBox styleClass="section-card" spacing="14">
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label text="Uploaded Documents"
+                                   styleClass="section-title"/>
+                            <Label text="Double-click any row to open document"
+                                   styleClass="section-subtitle"/>
+                        </VBox>
+                        <Button text="👁 View Selected"
+                                styleClass="btn-secondary"
+                                onAction="#handleViewDocument"
+                                prefHeight="34"/>
+                        <Button text="🗑 Delete"
+                                styleClass="btn-danger"
+                                onAction="#handleDeleteDocument"
+                                prefHeight="34"/>
+                        <Button text="↻ Refresh"
+                                styleClass="btn-secondary"
+                                onAction="#handleRefresh"
+                                prefHeight="34"/>
+                    </HBox>
+
+                    <TableView fx:id="documentsTable"
+                               styleClass="data-table"
+                               prefHeight="320">
+                        <columns>
+                            <TableColumn fx:id="colFileName"
+                                         text="File Name"
+                                         prefWidth="200"/>
+                            <TableColumn fx:id="colFileType"
+                                         text="Type"
+                                         prefWidth="70"/>
+                            <TableColumn fx:id="colDocType"
+                                         text="Document Type"
+                                         prefWidth="140"/>
+                            <TableColumn fx:id="colPatient"
+                                         text="Patient"
+                                         prefWidth="130"/>
+                            <TableColumn fx:id="colUploadedBy"
+                                         text="Uploaded By"
+                                         prefWidth="130"/>
+                            <TableColumn fx:id="colSize"
+                                         text="Size"
+                                         prefWidth="80"/>
+                            <TableColumn fx:id="colDate"
+                                         text="Uploaded At"
+                                         prefWidth="160"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

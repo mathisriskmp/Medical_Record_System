@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.medchain.ui.controllers.AdminDashboardController"
+    prefWidth="1100" prefHeight="720">
+
+    <!-- ══════════ SIDEBAR ══════════ -->
+    <left>
+        <VBox styleClass="sidebar" spacing="0" prefWidth="220">
+
+            <VBox spacing="2" style="-fx-padding: 24 20 20 20;">
+                <Label text="🏥 MedChain"
+                       styleClass="sidebar-logo"/>
+                <Label text="Medical Records"
+                       styleClass="sidebar-logo-sub"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <HBox alignment="CENTER"
+                  style="-fx-padding: 12 20 8 20;">
+                <Label text="ADMIN PANEL"
+                       styleClass="role-badge role-admin"/>
+            </HBox>
+
+            <VBox spacing="2"
+                  style="-fx-padding: 0 20 16 20;">
+                <Label fx:id="welcomeLabel"
+                       text="Admin"
+                       styleClass="sidebar-welcome"
+                       wrapText="true"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <VBox spacing="2"
+                  style="-fx-padding: 12 0 0 0;">
+                <Button text="👥  User Management"
+                        styleClass="nav-item nav-item-active"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+                <Button text="📋  Audit Logs"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+                <Button text="🚨  Emergency Logs"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+            </VBox>
+
+            <VBox style="-fx-padding: 16 20 0 20;">
+                <Label fx:id="statusLabel"
+                       text=""
+                       styleClass="status-success"
+                       wrapText="true"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox style="-fx-padding: 16 16 24 16;">
+                <Button text="Sign Out"
+                        styleClass="logout-btn"
+                        onAction="#handleLogout"
+                        maxWidth="Infinity"
+                        prefHeight="36"/>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ══════════ MAIN CONTENT ══════════ -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    styleClass="scroll-pane">
+            <VBox styleClass="content-area" spacing="20">
+
+                <!-- Page Header -->
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <VBox HBox.hgrow="ALWAYS" spacing="4">
+                        <Label text="Admin Dashboard"
+                               styleClass="page-title"/>
+                        <Label text="Manage users, monitor audit logs and system health"
+                               styleClass="page-subtitle"/>
+                    </VBox>
+                    <Button text="↻ Refresh All"
+                            styleClass="btn-secondary"
+                            onAction="#handleRefreshAll"
+                            prefHeight="36"/>
+                </HBox>
+
+                <!-- Stat Cards -->
+                <HBox spacing="14">
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="TOTAL USERS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalUsersLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="All roles"
+                               styleClass="stat-badge badge-purple"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="PATIENTS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalPatientsLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="Registered"
+                               styleClass="stat-badge badge-blue"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="DOCTORS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalDoctorsLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="Active"
+                               styleClass="stat-badge badge-green"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="TOTAL RECORDS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalRecordsLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="Blockchain anchored"
+                               styleClass="stat-badge badge-teal"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="CHAIN STATUS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="chainStatusLabel"
+                               text="..."
+                               styleClass="stat-value"
+                               style="-fx-font-size: 14px;"/>
+                        <Label text="Integrity"
+                               styleClass="stat-badge badge-teal"/>
+                    </VBox>
+                </HBox>
+
+                <!-- User Management -->
+                <VBox styleClass="section-card" spacing="14">
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label text="User Management"
+                                   styleClass="section-title"/>
+                            <Label text="View and manage all system users"
+                                   styleClass="section-subtitle"/>
+                        </VBox>
+                        <Button text="🗑 Delete Selected"
+                                styleClass="btn-danger"
+                                onAction="#handleDeleteUser"
+                                prefHeight="34"/>
+                    </HBox>
+
+                    <TableView fx:id="usersTable"
+                               styleClass="data-table"
+                               prefHeight="220">
+                        <columns>
+                            <TableColumn fx:id="colUserId"
+                                         text="ID"
+                                         prefWidth="50"/>
+                            <TableColumn fx:id="colUserName"
+                                         text="Full Name"
+                                         prefWidth="180"/>
+                            <TableColumn fx:id="colUserEmail"
+                                         text="Email"
+                                         prefWidth="220"/>
+                            <TableColumn fx:id="colUserRole"
+                                         text="Role"
+                                         prefWidth="100"/>
+                            <TableColumn fx:id="colUserCreated"
+                                         text="Registered"
+                                         prefWidth="160"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!-- Audit Logs -->
+                <VBox styleClass="section-card" spacing="14">
+                    <Label text="Audit Trail"
+                           styleClass="section-title"/>
+                    <Label text="Complete log of all system actions"
+                           styleClass="section-subtitle"/>
+
+                    <TableView fx:id="auditTable"
+                               styleClass="data-table"
+                               prefHeight="200">
+                        <columns>
+                            <TableColumn fx:id="colAuditUser"
+                                         text="User"
+                                         prefWidth="160"/>
+                            <TableColumn fx:id="colAuditAction"
+                                         text="Action"
+                                         prefWidth="160"/>
+                            <TableColumn fx:id="colAuditDetails"
+                                         text="Details"
+                                         prefWidth="360"/>
+                            <TableColumn fx:id="colAuditTime"
+                                         text="Timestamp"
+                                         prefWidth="160"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!-- Emergency Logs -->
+                <VBox styleClass="section-card" spacing="14">
+                    <Label text="Emergency Access Logs"
+                           styleClass="section-title"
+                           style="-fx-text-fill: #92400e;"/>
+                    <Label text="All emergency bypass access events"
+                           styleClass="section-subtitle"/>
+
+                    <TableView fx:id="emergencyTable"
+                               styleClass="data-table"
+                               prefHeight="180">
+                        <columns>
+                            <TableColumn fx:id="colEmgDoctor"
+                                         text="Doctor"
+                                         prefWidth="180"/>
+                            <TableColumn fx:id="colEmgPatient"
+                                         text="Patient"
+                                         prefWidth="180"/>
+                            <TableColumn fx:id="colEmgReason"
+                                         text="Reason"
+                                         prefWidth="320"/>
+                            <TableColumn fx:id="colEmgTime"
+                                         text="Accessed At"
+                                         prefWidth="160"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

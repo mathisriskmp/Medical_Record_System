@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<StackPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.medchain.ui.controllers.RegisterController"
+    styleClass="login-root"
+    prefWidth="900" prefHeight="650">
+
+    <VBox alignment="CENTER" prefWidth="900" prefHeight="650">
+
+        <!-- Register Card -->
+        <VBox
+            styleClass="login-card"
+            alignment="CENTER"
+            spacing="14"
+            maxWidth="460"
+            minWidth="400">
+
+            <padding>
+                <Insets top="40" right="48" bottom="40" left="48"/>
+            </padding>
+
+            <!-- Logo -->
+            <VBox alignment="CENTER" spacing="4">
+                <Label text="🏥 MedChain"
+                       styleClass="login-logo-text"/>
+                <Label text="Create Your Account"
+                       styleClass="login-subtitle"/>
+            </VBox>
+
+            <Separator styleClass="login-divider"/>
+
+            <!-- Full Name -->
+            <VBox spacing="6">
+                <Label text="FULL NAME"
+                       styleClass="login-field-label"/>
+                <TextField
+                    fx:id="nameField"
+                    promptText="Enter your full name"
+                    styleClass="login-field"
+                    prefHeight="40"/>
+            </VBox>
+
+            <!-- Email -->
+            <VBox spacing="6">
+                <Label text="EMAIL ADDRESS"
+                       styleClass="login-field-label"/>
+                <TextField
+                    fx:id="emailField"
+                    promptText="your@hospital.com"
+                    styleClass="login-field"
+                    prefHeight="40"/>
+            </VBox>
+
+            <!-- Password -->
+            <VBox spacing="6">
+                <Label text="PASSWORD"
+                       styleClass="login-field-label"/>
+                <PasswordField
+                    fx:id="passwordField"
+                    promptText="Min 8 chars, uppercase, number"
+                    styleClass="login-field"
+                    prefHeight="40"/>
+            </VBox>
+
+            <!-- Confirm Password -->
+            <VBox spacing="6">
+                <Label text="CONFIRM PASSWORD"
+                       styleClass="login-field-label"/>
+                <PasswordField
+                    fx:id="confirmPasswordField"
+                    promptText="Re-enter your password"
+                    styleClass="login-field"
+                    prefHeight="40"/>
+            </VBox>
+
+            <!-- Role Selection -->
+            <VBox spacing="6">
+                <Label text="REGISTER AS"
+                       styleClass="login-field-label"/>
+                <ComboBox
+                    fx:id="roleComboBox"
+                    promptText="Select your role..."
+                    styleClass="login-field"
+                    maxWidth="Infinity"
+                    prefHeight="40"/>
+            </VBox>
+
+            <!-- Admin Secret Code (hidden by default) -->
+            <VBox fx:id="adminCodeBox"
+                  spacing="6"
+                  visible="false"
+                  managed="false">
+                <Label text="ADMIN SECRET CODE"
+                       styleClass="login-field-label"
+                       style="-fx-text-fill: #fbbf24;"/>
+                <PasswordField
+                    fx:id="adminCodeField"
+                    promptText="Enter admin secret code"
+                    styleClass="login-field"
+                    prefHeight="40"/>
+            </VBox>
+
+            <!-- Error Label -->
+            <Label
+                fx:id="errorLabel"
+                text=""
+                styleClass="login-error"
+                wrapText="true"
+                maxWidth="360"
+                alignment="CENTER"/>
+
+            <!-- Success Label -->
+            <Label
+                fx:id="successLabel"
+                text=""
+                styleClass="login-loading"
+                wrapText="true"
+                maxWidth="360"
+                alignment="CENTER"/>
+
+            <!-- Register Button -->
+            <Button
+                fx:id="registerButton"
+                text="Create Account"
+                styleClass="login-btn"
+                onAction="#handleRegister"
+                maxWidth="Infinity"
+                prefHeight="44"/>
+
+            <!-- Back to Login -->
+            <HBox alignment="CENTER" spacing="6">
+                <Label text="Already have an account?"
+                       styleClass="login-footer"/>
+                <Hyperlink
+                    text="Sign In"
+                    styleClass="login-loading"
+                    onAction="#handleBackToLogin"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+</StackPane>

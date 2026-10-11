@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.medchain.ui.controllers.DoctorDashboardController"
+    prefWidth="1100" prefHeight="720">
+
+    <!-- ══════════ SIDEBAR ══════════ -->
+    <left>
+        <VBox styleClass="sidebar" spacing="0" prefWidth="220">
+
+            <VBox spacing="2" style="-fx-padding: 24 20 20 20;">
+                <Label text="🏥 MedChain"
+                       styleClass="sidebar-logo"/>
+                <Label text="Medical Records"
+                       styleClass="sidebar-logo-sub"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <HBox alignment="CENTER"
+                  style="-fx-padding: 12 20 8 20;">
+                <Label text="DOCTOR PORTAL"
+                       styleClass="role-badge role-doctor"/>
+            </HBox>
+
+            <VBox spacing="2"
+                  style="-fx-padding: 0 20 16 20;">
+                <Label fx:id="welcomeLabel"
+                       text="Dr."
+                       styleClass="sidebar-welcome"
+                       wrapText="true"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <VBox spacing="2"
+                  style="-fx-padding: 12 0 0 0;">
+                <Button text="👥  My Patients"
+                        styleClass="nav-item nav-item-active"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+                <Button text="📝  Add Record"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+                <Button text="🚨  Emergency Access"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+            </VBox>
+
+            <!-- Status Label in sidebar -->
+            <VBox style="-fx-padding: 16 20 0 20;">
+                <Label fx:id="statusLabel"
+                       text=""
+                       styleClass="status-success"
+                       wrapText="true"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox style="-fx-padding: 16 16 24 16;">
+                <Button text="Sign Out"
+                        styleClass="logout-btn"
+                        onAction="#handleLogout"
+                        maxWidth="Infinity"
+                        prefHeight="36"/>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ══════════ MAIN CONTENT ══════════ -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    styleClass="scroll-pane">
+            <VBox styleClass="content-area" spacing="20">
+
+                <!-- Page Header -->
+                <VBox spacing="4">
+                    <Label text="Doctor Dashboard"
+                           styleClass="page-title"/>
+                    <Label text="Manage patient records and emergency access"
+                           styleClass="page-subtitle"/>
+                </VBox>
+
+                <!-- Stat Cards -->
+                <HBox spacing="16">
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="MY PATIENTS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalPatientsLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="Access granted"
+                               styleClass="stat-badge badge-green"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="RECORDS LOADED"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalRecordsLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="Selected patient"
+                               styleClass="stat-badge badge-blue"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Main Content Row -->
+                <HBox spacing="20" alignment="TOP_LEFT">
+
+                    <!-- Left Column -->
+                    <VBox spacing="16" HBox.hgrow="ALWAYS">
+
+                        <!-- Patients Table -->
+                        <VBox styleClass="section-card" spacing="12">
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label text="My Patients"
+                                           styleClass="section-title"/>
+                                    <Label text="Patients who granted you access"
+                                           styleClass="section-subtitle"/>
+                                </VBox>
+                                <Button text="↻"
+                                        styleClass="btn-secondary"
+                                        onAction="#handleRefresh"
+                                        prefHeight="32"
+                                        prefWidth="32"/>
+                            </HBox>
+
+                            <TableView fx:id="patientsTable"
+                                       styleClass="data-table"
+                                       prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="colPatientName"
+                                                 text="Patient Name"
+                                                 prefWidth="200"/>
+                                    <TableColumn fx:id="colGrantedAt"
+                                                 text="Access Since"
+                                                 prefWidth="180"/>
+                                </columns>
+                            </TableView>
+
+                            <Button text="📋 Load Patient Records"
+                                    styleClass="btn-secondary"
+                                    onAction="#handleLoadPatientRecords"
+                                    prefHeight="36"/>
+                        </VBox>
+
+                        <!-- Patient Records -->
+                        <VBox styleClass="section-card" spacing="12">
+                            <Label text="Patient Records"
+                                   styleClass="section-title"/>
+                            <TableView fx:id="recordsTable"
+                                       styleClass="data-table"
+                                       prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="colDate"
+                                                 text="Date"
+                                                 prefWidth="130"/>
+                                    <TableColumn fx:id="colDiagnosis"
+                                                 text="Diagnosis"
+                                                 prefWidth="180"/>
+                                    <TableColumn fx:id="colPrescription"
+                                                 text="Prescription"
+                                                 prefWidth="160"/>
+                                    <TableColumn fx:id="colNotes"
+                                                 text="Notes"
+                                                 prefWidth="140"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                    </VBox>
+
+                    <!-- Right Column — Add Record Form -->
+                    <VBox styleClass="section-card"
+                          spacing="14"
+                          prefWidth="300"
+                          minWidth="280">
+
+                        <Label text="Add New Record"
+                               styleClass="section-title"/>
+                        <Label text="Record will be blockchain anchored"
+                               styleClass="section-subtitle"/>
+
+                        <Separator/>
+
+                        <VBox spacing="6">
+                            <Label text="DIAGNOSIS *"
+                                   styleClass="field-label"/>
+                            <TextArea fx:id="diagnosisField"
+                                      promptText="Enter diagnosis..."
+                                      styleClass="text-area-field"
+                                      prefRowCount="3"
+                                      wrapText="true"/>
+                        </VBox>
+
+                        <VBox spacing="6">
+                            <Label text="PRESCRIPTION"
+                                   styleClass="field-label"/>
+                            <TextArea fx:id="prescriptionField"
+                                      promptText="Medications, dosage..."
+                                      styleClass="text-area-field"
+                                      prefRowCount="3"
+                                      wrapText="true"/>
+                        </VBox>
+
+                        <VBox spacing="6">
+                            <Label text="NOTES"
+                                   styleClass="field-label"/>
+                            <TextArea fx:id="notesField"
+                                      promptText="Additional clinical notes..."
+                                      styleClass="text-area-field"
+                                      prefRowCount="3"
+                                      wrapText="true"/>
+                        </VBox>
+
+                        <Button text="⛓ Save + Anchor to Blockchain"
+                                styleClass="btn-primary"
+                                onAction="#handleAddRecord"
+                                maxWidth="Infinity"
+                                prefHeight="40"/>
+
+                        <Separator/>
+                        <Button text="📄  My Documents"
+        styleClass="nav-item"
+        maxWidth="Infinity"
+        prefHeight="42"
+        onAction="#handleOpenDocuments"/>
+                        <!-- Emergency Access Section -->
+                        <Label text="EMERGENCY ACCESS"
+                               styleClass="field-label"
+                               style="-fx-text-fill: #92400e;"/>
+
+                        <Label text="Bypass normal permissions for critical situations"
+                               styleClass="section-subtitle"
+                               wrapText="true"/>
+
+                        <ComboBox fx:id="emergencyPatientCombo"
+                                  promptText="Select patient..."
+                                  styleClass="combo-field"
+                                  maxWidth="Infinity"
+                                  prefHeight="36"/>
+
+                        <Button text="🚨 Emergency Access"
+                                styleClass="btn-warning"
+                                onAction="#handleEmergencyAccess"
+                                maxWidth="Infinity"
+                                prefHeight="36"/>
+
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.medchain.ui.controllers.PatientDashboardController"
+    prefWidth="1100" prefHeight="720">
+
+    <!-- ══════════ SIDEBAR ══════════ -->
+    <left>
+        <VBox styleClass="sidebar" spacing="0" prefWidth="220">
+
+            <!-- Logo -->
+            <VBox spacing="2" style="-fx-padding: 24 20 20 20;">
+                <Label text="🏥 MedChain"
+                       styleClass="sidebar-logo"/>
+                <Label text="Medical Records"
+                       styleClass="sidebar-logo-sub"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <!-- Role Badge -->
+            <HBox alignment="CENTER"
+                  style="-fx-padding: 12 20 8 20;">
+                <Label text="PATIENT PORTAL"
+                       styleClass="role-badge role-patient"/>
+            </HBox>
+
+            <!-- User Info -->
+            <VBox spacing="2"
+                  style="-fx-padding: 0 20 16 20;">
+                <Label fx:id="welcomeLabel"
+                       text="Welcome"
+                       styleClass="sidebar-welcome"
+                       wrapText="true"/>
+            </VBox>
+
+            <Separator styleClass="sidebar-divider"/>
+
+            <!-- Navigation -->
+            <VBox spacing="2"
+                  style="-fx-padding: 12 0 0 0;">
+                <Button text="📋  My Records"
+                        styleClass="nav-item nav-item-active"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+                <Button text="🔑  Access Control"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+                <Button text="🔍  Verify Integrity"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        prefHeight="42"/>
+            </VBox>
+
+            <!-- Spacer -->
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Logout -->
+            <VBox style="-fx-padding: 16 16 24 16;">
+                <Button text="Sign Out"
+                        styleClass="logout-btn"
+                        onAction="#handleLogout"
+                        maxWidth="Infinity"
+                        prefHeight="36"/>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ══════════ MAIN CONTENT ══════════ -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    styleClass="scroll-pane">
+            <VBox styleClass="content-area" spacing="20">
+
+                <!-- Page Header -->
+                <VBox spacing="4">
+                    <Label text="My Medical Records"
+                           styleClass="page-title"/>
+                    <Label text="View records, verify integrity and manage doctor access"
+                           styleClass="page-subtitle"/>
+                </VBox>
+
+                <!-- ── Stat Cards ── -->
+                <HBox spacing="16">
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="TOTAL RECORDS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="totalRecordsLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="All time"
+                               styleClass="stat-badge badge-blue"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="DOCTORS WITH ACCESS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="doctorCountLabel"
+                               text="0"
+                               styleClass="stat-value"/>
+                        <Label text="Active"
+                               styleClass="stat-badge badge-green"/>
+                    </VBox>
+                    <VBox styleClass="stat-card"
+                          HBox.hgrow="ALWAYS"
+                          spacing="6">
+                        <Label text="BLOCKCHAIN STATUS"
+                               styleClass="stat-label"/>
+                        <Label fx:id="chainStatusLabel"
+                               text="Checking..."
+                               styleClass="stat-value"
+                               style="-fx-font-size: 14px;"/>
+                        <Label text="Verified"
+                               styleClass="stat-badge badge-teal"/>
+                    </VBox>
+                </HBox>
+
+                <!-- ── Medical Records Table ── -->
+                <VBox styleClass="section-card" spacing="14">
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label text="Medical Records"
+                                   styleClass="section-title"/>
+                            <Label text="Your complete medical history"
+                                   styleClass="section-subtitle"/>
+                        </VBox>
+                        <Button text="↻ Refresh"
+                                styleClass="btn-secondary"
+                                onAction="#handleRefresh"
+                                prefHeight="34"/>
+                    </HBox>
+
+                    <TableView fx:id="recordsTable"
+                               styleClass="data-table"
+                               prefHeight="220">
+                        <columns>
+                            <TableColumn fx:id="colDoctor"
+                                         text="Doctor"
+                                         prefWidth="140"/>
+                            <TableColumn fx:id="colDiagnosis"
+                                         text="Diagnosis"
+                                         prefWidth="200"/>
+                            <TableColumn fx:id="colPrescription"
+                                         text="Prescription"
+                                         prefWidth="180"/>
+                            <TableColumn fx:id="colDate"
+                                         text="Date"
+                                         prefWidth="150"/>
+                            <TableColumn fx:id="colHash"
+                                         text="SHA-256 Hash"
+                                         prefWidth="180"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- Verify Section -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button text="🔍 Verify Selected Record"
+                                styleClass="btn-secondary"
+                                onAction="#handleVerifyRecord"
+                                prefHeight="36"/>
+                        <Label fx:id="verifyStatusLabel"
+                               text=""
+                               styleClass="status-success"
+                               wrapText="true"/>
+                    </HBox>
+
+                    <Label fx:id="statusLabel"
+                           text=""
+                           styleClass="status-info"/>
+                </VBox>
+
+                <!-- ── Access Control ── -->
+                <VBox styleClass="section-card" spacing="14">
+                    <VBox>
+                        <Label text="Doctor Access Control"
+                               styleClass="section-title"/>
+                        <Label text="Control which doctors can view your records"
+                               styleClass="section-subtitle"/>
+                    </VBox>
+
+                    <TableView fx:id="accessTable"
+                               styleClass="data-table"
+                               prefHeight="160">
+                        <columns>
+                            <TableColumn fx:id="colPermDoctor"
+                                         text="Doctor Name"
+                                         prefWidth="200"/>
+                            <TableColumn fx:id="colPermGranted"
+                                         text="Granted At"
+                                         prefWidth="180"/>
+                            <TableColumn fx:id="colPermStatus"
+                                         text="Status"
+                                         prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                    <Button text="📄  My Documents"
+        styleClass="nav-item"
+        maxWidth="Infinity"
+        prefHeight="42"
+        onAction="#handleOpenDocuments"/>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <ComboBox fx:id="doctorComboBox"
+                                  promptText="Select a doctor..."
+                                  styleClass="combo-field"
+                                  prefWidth="240"
+                                  prefHeight="36"/>
+                        <Button text="✅ Grant Access"
+                                styleClass="btn-success"
+                                onAction="#handleGrantAccess"
+                                prefHeight="36"/>
+                        <Button text="🚫 Revoke Selected"
+                                styleClass="btn-danger"
+                                onAction="#handleRevokeAccess"
+                                prefHeight="36"/>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
